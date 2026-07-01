@@ -1,0 +1,15 @@
+{
+	"name": "adf-vehicletest",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "812a045d-ec5d-4daf-8aad-eded9eabc5ce",
+		"tenantId": "1c3c976a-e82c-4952-ad4a-a203ad245989"
+	}
+}

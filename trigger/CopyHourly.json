@@ -1,0 +1,28 @@
+{
+	"name": "CopyHourly",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Load Medallion",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"PPFolderName": "bronze"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 20,
+				"startTime": "2026-06-26T16:43:00",
+				"endTime": "2026-07-02T22:00:00",
+				"timeZone": "Central America Standard Time"
+			}
+		}
+	}
+}

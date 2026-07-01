@@ -1,0 +1,6 @@
+{
+	"name": "vehicletestIR",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
