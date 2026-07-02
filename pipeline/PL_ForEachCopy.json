@@ -5,11 +5,18 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Get Metadata List of Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.FileList",
+						"value": "@activity('Get Metadata List of Files').output.childItems",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -33,7 +40,7 @@
 										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
 										"wildcardFileName": {
-											"value": "@item()",
+											"value": "@item().name",
 											"type": "Expression"
 										},
 										"enablePartitionDiscovery": false
@@ -68,18 +75,66 @@
 									"referenceName": "ADSL",
 									"type": "DatasetReference",
 									"parameters": {
-										"FolderName": "bronze"
+										"FolderName": {
+											"value": "@pipeline().parameters.InputFolder",
+											"type": "Expression"
+										}
 									}
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "Silver3",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"DS_FoderName": {
+											"value": "@pipeline().parameters.OutputFolder",
+											"type": "Expression"
+										},
+										"DS_FileName": {
+											"value": "@concat(\n    split(item().name, '.')[0], \n    '_', \n    formatDateTime(utcNow(), 'yyyyMMdd_HHmmss'), \n    '.csv'\n)",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "Get Metadata List of Files",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ADSL",
+						"type": "DatasetReference",
+						"parameters": {
+							"FolderName": {
+								"value": "@pipeline().parameters.InputFolder",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
 				}
 			}
 		],
@@ -90,6 +145,14 @@
 					"Facilities.csv",
 					"Products.csv"
 				]
+			},
+			"InputFolder": {
+				"type": "string",
+				"defaultValue": "bronze"
+			},
+			"OutputFolder": {
+				"type": "string",
+				"defaultValue": "silver3"
 			}
 		},
 		"annotations": []

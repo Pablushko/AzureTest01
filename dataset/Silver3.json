@@ -5,12 +5,27 @@
 			"referenceName": "ADSL2MedallionLS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"DS_FoderName": {
+				"type": "string"
+			},
+			"DS_FileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "silver3"
+				"fileName": {
+					"value": "@dataset().DS_FileName",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().DS_FoderName",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
