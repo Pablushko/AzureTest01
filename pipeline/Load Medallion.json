@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data from local to ADSL",
+				"name": "Copy data from local to ADSL 2",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
