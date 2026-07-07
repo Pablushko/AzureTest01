@@ -33,7 +33,10 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"PPFolderName": "bronze"
+						"PPFolderName": {
+							"value": "@pipeline().parameters.input_folder",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -75,8 +78,8 @@
 				}
 			},
 			{
-				"name": "Clean File",
-				"type": "ExecuteDataFlow",
+				"name": "Notebook1",
+				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
 						"activity": "Execute Bronze",
@@ -94,18 +97,23 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "Clean File",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
+					"notebookPath": "/dbwksTest01/Notebook02",
+					"baseParameters": {
+						"file_name": "locations2.csv"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDatabricks1",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
+		"parameters": {
+			"input_folder": {
+				"type": "string",
+				"defaultValue": "bronze"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2026-06-30T21:09:14Z"
 	},
